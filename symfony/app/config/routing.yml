@@ -1,0 +1,4 @@
+hsma_studienleistung:
+    resource: "@InfoDisplayBundle/Resources/config/routing.yml"
+    prefix:   /
+

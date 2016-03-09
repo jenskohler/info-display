@@ -1,0 +1,47 @@
+{# Add news form #}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+  {% stylesheets
+    '../vendor/twbs/bootstrap/dist/css/bootstrap.css'
+    '@InfoDisplayBundle/Resources/public/css/custom.css'
+    filter='cssrewrite' %}
+  <link rel="stylesheet" href="{{ asset_url }}"/>
+  {% endstylesheets %}
+
+  {% javascripts
+    '../vendor/components/jquery/jquery.js'
+    '../vendor/twbs/bootstrap/dist/js/bootstrap.js'
+    output='js/compiled/jqueryandtools.js' %}
+  <script type="text/javascript" src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+
+
+  <title>Dozent auswählen</title>
+</head>
+
+<body>
+
+<div class="container-fluid">
+<h1>Dozent auswählen</h1>
+
+{{ form_start(form) }}
+
+<table class="table">
+  <tr>
+    <th>{{ form_label(form.lecturer) }}</th>
+    <td>{{ form_widget(form.lecturer) }}</td>
+  </tr>
+</table>
+
+<br>
+{{ form_widget(form.submit) }}&nbsp;{{ form_widget(form.cancel) }}
+{{ form_end(form) }}
+</div>
+
+<a href="{{ path('logout') }}">Abmelden</a>
+
+</body>
+</html>

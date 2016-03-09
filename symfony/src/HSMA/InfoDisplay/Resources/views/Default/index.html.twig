@@ -1,0 +1,55 @@
+{# Start page of the application #}
+<!DOCTYPE html>
+<html>
+<head>
+  {% stylesheets
+      '../vendor/twbs/bootstrap/dist/css/bootstrap.css'
+      '@InfoDisplayBundle/Resources/public/css/custom.css'
+      '@InfoDisplayBundle/Resources/public/css/bootstrap-datepicker3.css'
+      filter='cssrewrite' %}
+  <link rel="stylesheet" href="{{ asset_url }}"/>
+  {% endstylesheets %}
+
+  {% javascripts
+      '../vendor/components/jquery/jquery.js'
+      '../vendor/twbs/bootstrap/dist/js/bootstrap.js'
+      output='js/compiled/jqueryandtools.js' %}
+  <script type="text/javascript" src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+
+  <title>Verwaltung des Infodisplays</title>
+</head>
+<body>
+<div class="container-fluid">
+    <h1>Verwaltung von Infodisplays</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Kurs</th>
+                <th class="{{ block == 0 ? 'highlight' : '' }}">1. Block<br><small>08:00-09:30</small></th>
+                <th class="{{ block == 1 ? 'highlight' : '' }}">2. Block<br><small>09:45-11:15</small></th>
+                <th class="{{ block == 2 ? 'highlight' : '' }}">3. Block<br><small>11:30-13:00</small></th>
+                <th class="{{ block == 3 ? 'highlight' : '' }}">4. Block<br><small>13:40-15:10</small></th>
+                <th class="{{ block == 4 ? 'highlight' : '' }}">5. Block<br><small>15:20-16:50</small></th>
+                <th class="{{ block == 5 ? 'highlight' : '' }}">6. Block<br><small>17:00-18:30</small></th>
+            </tr>
+        </thead>
+        <tbody>
+        {%  for semester,entries in plan  %}
+            <tr>
+                <td>{{ semester }}</td>
+
+                {% for entry in entries %}
+                    <td class="{{ entry[2] ? 'highlight' : '' }}"><b>{{ entry[0] }}</b> <small>{{ entry[1] }}&nbsp;</small></td>
+                {% endfor %}
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <p>Angemeldet als: {{ user }} [{{ user.getRoles()|join(', ') }}]</p>
+</div>
+</body>
+</html>

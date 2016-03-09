@@ -1,0 +1,35 @@
+{# Start page of the application #}
+<!DOCTYPE html>
+<html>
+<head>
+    {% stylesheets
+      '../vendor/twbs/bootstrap/dist/css/bootstrap.css'
+      '@InfoDisplayBundle/Resources/public/css/*'
+      filter='cssrewrite' %}
+      <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+    {% javascripts
+      '../vendor/components/jquery/jquery.js'
+      '../vendor/twbs/bootstrap/dist/js/bootstrap.js'
+      output='js/compiled/jqueryandtools.js' %}
+      <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% if reload %}
+        <script>
+            setTimeout(function(){
+                window.location.reload(1);
+            }, {{ timeout }});
+        </script>
+    {% endif %}
+
+  <title>Fakultät für Informatik</title>
+</head>
+<body>
+<div class="container-fluid">
+    <h1>Fakultät für Informatik <small class="text-right">{{ time }}</small></h1>
+    <img src="{{ asset(picture) }}" alt="Informatik macht Spaß" style="max-width: 1900px; max-height: 700px;"/>
+</div>
+</body>
+</html>

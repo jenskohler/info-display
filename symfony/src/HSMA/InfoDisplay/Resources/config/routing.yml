@@ -1,0 +1,94 @@
+base:
+    path:  /
+    defaults: { _controller: InfoDisplayBundle:View\Display:index }
+
+news:
+    path:  /news
+    defaults: { _controller: InfoDisplayBundle:View\News:news }
+
+timetable:
+    path:  /timetable
+    defaults: { _controller: InfoDisplayBundle:View\Timetable:timetable }
+
+picture:
+    path:  /picture
+    defaults: { _controller: InfoDisplayBundle:View\Picture:picture }
+
+rooms:
+    path:  /rooms
+    defaults: { _controller: InfoDisplayBundle:View\Rooms:rooms }
+
+admin:
+    path:  /admin
+    defaults: { _controller: InfoDisplayBundle:Admin\Default:index }
+
+news_list:
+    path:  /admin/news
+    defaults: { _controller: InfoDisplayBundle:Admin\News:listCurrentNews }
+
+news_oldlist:
+    path:  /admin/oldnews
+    defaults: { _controller: InfoDisplayBundle:Admin\News:listOldNews }
+
+news_add:
+    path:  /admin/news/add
+    defaults: { _controller: InfoDisplayBundle:Admin\News:edit }
+
+news_delete:
+    path:  /admin/news/delete/{id}
+    defaults: { _controller: InfoDisplayBundle:Admin\News:delete }
+
+news_edit:
+    path:  /admin/news/edit/{id}
+    defaults: { _controller: InfoDisplayBundle:Admin\News:edit }
+
+cancellation_add:
+    path:  /admin/cancellation/add
+    defaults: { _controller: InfoDisplayBundle:Admin\Cancellation:new }
+
+cancellation_list:
+    path:  /admin/cancellation
+    defaults: { _controller: InfoDisplayBundle:Admin\Cancellation:list }
+
+cancellation_delete:
+    path:  /admin/cancellation/delete/{id}
+    defaults: { _controller: InfoDisplayBundle:Admin\Cancellation:delete }
+
+cancellation_add_for_lecturer:
+    path:  /admin/cancellation/add/{id}
+    defaults: { _controller: InfoDisplayBundle:Admin\Cancellation:add }
+
+lectures_for_lecturer:
+    path:  /public/api/lectures/{lecturerShortname}
+    defaults: { _controller: InfoDisplayBundle:API\Api:retrieveLecturesForLecturer }
+
+all_rooms:
+        path:  /public/api/rooms
+        defaults: { _controller: InfoDisplayBundle:API\Api:retrieveAllRooms }
+
+sync_rooms:
+        path:  /public/api/rooms/synchronize
+        defaults: { _controller: InfoDisplayBundle:API\Api:synchronizeAllRooms }
+
+bookings:
+        path:  /public/api/bookings/{room}
+        defaults: { _controller: InfoDisplayBundle:API\Api:retrieveBookings }
+
+sync_bookings:
+        path:  /public/api/bookings/{room}/synchronize
+        defaults: { _controller: InfoDisplayBundle:API\Api:synchronizeBookings }
+
+login:
+    path: /admin/login
+    defaults: { _controller: InfoDisplayBundle:Admin\Security:login }
+
+login_check:
+    path: /admin/login_check
+
+logout:
+    path: /admin/logout
+
+change_password:
+    path: /change_password
+    defaults: { _controller: InfoDisplayBundle:Admin\Security:changePassword }
+

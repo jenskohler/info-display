@@ -1,0 +1,49 @@
+{# Login form of the application. #}
+
+<!DOCTYPE html>
+<html>
+<head>
+  {% stylesheets '../vendor/twbs/bootstrap/dist/css/bootstrap.min.css' filter='cssrewrite' %}
+  <link rel="stylesheet" href="{{ asset_url }}"/>
+  {% endstylesheets %}
+
+  {% javascripts
+      '../vendor/twbs/bootstrap/dist/js/bootstrap.min.js'
+      '../vendor/components/jquery/jquery.min.js'
+  output='js/compiled/jqueryandtools.js' %}
+  <script type="text/javascript" src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+
+
+  <title>Login</title>
+</head>
+
+<body>
+<div class="container-fluid">
+<h1>Anmeldung</h1>
+
+<form action="{{ path('login_check') }}" method="post">
+
+  <table>
+    <tr>
+      <th><label for="username">Benutzername:</label></th>
+      <td><input type="text" id="username" name="_username" value="{{ last_username }}"></td>
+    </tr>
+    <tr>
+      <th><label for="password">Password:</label></th>
+      <td><input type="password" id="password" name="_password"></td>
+    </tr>
+  </table>
+
+  {% if error %}
+    <div class='login_error'>{{ error.message }}</div>
+  {% endif %}
+
+  <br>
+  <input type="hidden" name="_target_path" value="/" />
+
+  <button type="submit">Login</button>
+</form>
+</div>
+</body>
+</html>

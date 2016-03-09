@@ -1,0 +1,65 @@
+{# Add news form #}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+  {% stylesheets
+    '../vendor/twbs/bootstrap/dist/css/bootstrap.css'
+    '@InfoDisplayBundle/Resources/public/css/custom.css'
+    filter='cssrewrite' %}
+  <link rel="stylesheet" href="{{ asset_url }}"/>
+  {% endstylesheets %}
+
+  {% javascripts
+    '../vendor/components/jquery/jquery.js'
+    '../vendor/twbs/bootstrap/dist/js/bootstrap.js'
+    output='js/compiled/jqueryandtools.js' %}
+  <script type="text/javascript" src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+
+
+  <title>News</title>
+</head>
+
+<body>
+
+<div class="container-fluid">
+<h1>News</h1>
+  <br>
+  <br>
+  <button onclick="parent.location='{{ path('news_add') }}'">Hinzufügen</button>
+  <br>
+  <br>
+
+  <table class="table table-striped">
+    <tr>
+      <th>ID</th>
+      <th>Semester</th>
+      <th>Eingestellt</th>
+      <th>Gültig bis</th>
+      <th>Text</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+
+    {% for n in news %}
+  <tr>
+    <th>{{ n.id }}</th>
+    <th>{{ n.semester }}</th>
+    <td>{{ n.posted|date('d-m-Y H:i') }}</td>
+    <td>{{ n.valid|date('d-m-Y') }}</td>
+    <td>{{ n.text|slice(0, 60) }}</td>
+    <td><button onclick="parent.location='{{ path('news_edit',   {'id': n.id } ) }}'">Bearbeiten</button></td>
+    <td><button onclick="parent.location='{{ path('news_delete', {'id': n.id } ) }}'">Löschen</button></td>
+  </tr>
+
+    {% endfor %}
+</table>
+
+  <a href="{{ path('admin') }}">Zurück</a><br>
+  <a href="{{ path('logout') }}">Abmelden</a>
+
+</div>
+</body>
+</html>

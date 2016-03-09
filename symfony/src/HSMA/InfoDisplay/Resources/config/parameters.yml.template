@@ -1,0 +1,19 @@
+# Parameters included by the central configuration file
+parameters:
+    # Database configuration
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: infodisplay
+    database_user: infodisplay
+    database_password: <!!!add real password here!!!>
+
+    ## LDAP server settings
+    #ldap_url: ldaps://localhost
+    ldap_url: ldaps://slm.sv.hs-mannheim.de
+    ldap_basedsn: ou=Users,dc=informatik,dc=hs-mannheim,dc=de
+    ldap_userprefix: uid
+
+    ## Path to backup tool
+    mysqldump_path: /Applications/XAMPP/xamppfiles/bin/mysqldump
+

@@ -1,0 +1,11 @@
+# Validation rules for different entity objects
+
+# Validation of the password change object
+HSMA\InfoDisplay\Entity\Security\PasswordChange:
+    properties:
+        oldPassword:
+            - Symfony\Component\Security\Core\Validator\Constraints\UserPassword:
+                message: "Aktuelles Password ist falsch"
+    getters:
+        passwordsMatch:
+            - 'True': { message: "Die neuen Passwörter stimmen nicht überein." }

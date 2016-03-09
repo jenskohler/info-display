@@ -1,0 +1,18 @@
+.highlight {
+    background-color: #ffebeb;
+}
+
+.cancelled {
+    color: red;
+    text-decoration: line-through;
+}
+
+td.current-block {
+    border-top: solid 4px red !important;
+    border-bottom: solid 4px red !important;
+}
+
+tr.current-block {
+    border-left: solid 4px red !important;
+    border-right: solid 4px red !important;
+}

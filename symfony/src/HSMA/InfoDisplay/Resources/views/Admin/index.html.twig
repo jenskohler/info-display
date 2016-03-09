@@ -1,0 +1,40 @@
+{# Add news form #}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+  {% stylesheets
+    '../vendor/twbs/bootstrap/dist/css/bootstrap.css'
+    '@InfoDisplayBundle/Resources/public/css/custom.css'
+    filter='cssrewrite' %}
+  <link rel="stylesheet" href="{{ asset_url }}"/>
+  {% endstylesheets %}
+
+  {% javascripts
+    '../vendor/components/jquery/jquery.js'
+    '../vendor/twbs/bootstrap/dist/js/bootstrap.js'
+    output='js/compiled/jqueryandtools.js' %}
+  <script type="text/javascript" src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+
+
+  <title>Administration</title>
+</head>
+
+<body>
+
+<div class="container-fluid">
+<h1>Administration</h1>
+
+  <ul>
+    <li><a href="{{ path('news_list') }}">News</a></li>
+    <li><a href="{{ path('news_oldlist') }}">Abgelaufene News</a></li>
+    <li><a href="{{ path('cancellation_add') }}">Veranstaltungen absagen</a></li>
+  </ul>
+
+  <a href="{{ path('logout') }}">Abmelden</a>
+
+</div>
+</body>
+</html>

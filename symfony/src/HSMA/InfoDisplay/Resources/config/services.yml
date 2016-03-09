@@ -1,0 +1,23 @@
+services:
+    # Custom filters for twig
+    fakdb_extension.twig.extension:
+        class: HSMA\InfoDisplay\Twig\InfoDisplayFilters
+        tags:
+            - { name: twig.extension }
+
+    # Security services
+    fakdb_user_repository:
+        class: HSMA\InfoDisplay\Entity\UserRepository
+        arguments: [@doctrine, @logger]
+
+    ldap_authenticator:
+        class:     HSMA\InfoDisplay\Security\LdapAuthenticator
+        arguments: ['@security.encoder_factory', '%ldap_url%', '%ldap_basedsn%', '%ldap_userprefix%']
+
+    key_user_provider:
+        class:    HSMA\InfoDisplay\Security\ApiKeyUserProvider
+        arguments: [@doctrine]
+
+    key_authenticator:
+        class:     HSMA\InfoDisplay\Security\ApiKeyAuthenticator
+        arguments: ['@key_user_provider']

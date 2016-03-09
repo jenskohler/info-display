@@ -1,0 +1,3 @@
+The security configuration is done centrally in the security.yml file of Symfony: app/config/security.yml
+
+I have not found any means to load the security config from the bundle.

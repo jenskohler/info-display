@@ -1,0 +1,72 @@
+{# Add news form #}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+  {% stylesheets
+    '../vendor/twbs/bootstrap/dist/css/bootstrap.css'
+    '@InfoDisplayBundle/Resources/public/css/custom.css'
+    '@InfoDisplayBundle/Resources/public/css/bootstrap-datepicker3.css'
+    filter='cssrewrite' %}
+  <link rel="stylesheet" href="{{ asset_url }}"/>
+  {% endstylesheets %}
+
+  {% javascripts
+    '../vendor/components/jquery/jquery.js'
+    '../vendor/twbs/bootstrap/dist/js/bootstrap.js'
+    '@InfoDisplayBundle/Resources/public/js/bootstrap-datepicker.js'
+    output='js/compiled/jqueryandtools.js' %}
+  <script type="text/javascript" src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+
+
+  <title>News bearbeiten/hinzufügen</title>
+</head>
+
+<body>
+
+<div class="container-fluid">
+<h1>News bearbeiten/hinzufügen</h1>
+<br><br>
+{{ form_start(form) }}
+
+{{ form_errors(form) }}
+
+<table class="table">
+  <tr>
+    <th>{{ form_label(form.valid) }}</th>
+    <td>{{ form_widget(form.valid) }}</td>
+  </tr>
+  <tr>
+    <th>{{ form_label(form.semester) }}</th>
+    <td>{{ form_widget(form.semester) }}</td>
+  </tr>
+  <tr>
+    <th>{{ form_label(form.text) }}</th>
+    <td>{{ form_widget(form.text) }}</td>
+  </tr>
+</table>
+
+<br>
+{{ form_widget(form.submit) }}&nbsp;{{ form_widget(form.cancel) }}
+
+{{ form_end(form) }}
+
+  <a href="{{ path('logout') }}">Abmelden</a>
+
+</div>
+
+
+
+<script>
+  $('.datepicker').datepicker(
+          {
+            format: 'dd.mm.yyyy',
+            weekStart: 1,
+            todayHighlight: true
+          }
+  );
+</script>
+</body>
+</html>
