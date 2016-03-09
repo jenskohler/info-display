@@ -6,6 +6,7 @@
 
 **Deutsch**: Software für das Info-Display an der Fakultät für Informatik.
 
+
 ## Erweiterungen
 
 Jede/r kann gerne mit innovativen Ideen zu der Weiterentwicklung der Anzeige beitragen. Hierzu gibt es zwei Möglichkeiten:
@@ -14,6 +15,7 @@ Jede/r kann gerne mit innovativen Ideen zu der Weiterentwicklung der Anzeige bei
   2. Selbst in die Tasten greifen und eine Erweiterung programmieren und per Pull-Request an dieses Repository schicken.
 
 Möglichkeit 2 hat natürlich die besseren Chancen, dass die Idee schnell für alle zur Verfügung steht.
+
 
 ## Benutzung
 
@@ -31,6 +33,10 @@ Danach müssen die Rechte auf den cache-Verzeichnissen für den Webserver (`nobo
     sudo chown -R nobody symfony/app/logs/
 
 Die Login-Seite ist unter `app_dev.php/` erreichbar. Ein Test-User ist `t.smits` mit dem Passwort `test`.
+
+Das Datenbank-Password ist nicht gesetzt. Deswegen muss vor der Benutzung die Datei `parameters.yml` unter [symfony/src/HSMA/InfoDisplay/Resources/config](symfony/src/HSMA/InfoDisplay/Resources/config) aus der Datei [parameters.yml.template](symfony/src/HSMA/InfoDisplay/Resources/config/parameters.yml.template) erzeugt werden.
+
+Die Datenbank Struktur und Testdaten finden sich im Verzeichnis [db](db/).
 
 
 ## Deployment für Live-Betrieb (manuell)
