@@ -17,7 +17,7 @@ Jede/r kann gerne mit innovativen Ideen zu der Weiterentwicklung der Anzeige bei
 Möglichkeit 2 hat natürlich die besseren Chancen, dass die Idee schnell für alle zur Verfügung steht.
 
 
-## Benutzung
+## Installation
 
 Im Entwicklungsmodus ist die Anwendung unter der URL: `app_dev.php/...` erreichbar. Die Pfade nach app_dev.php ergeben sich aus der Konfiguration in der Datei `\symfony\src\HSMA\InfoDisplay\Resources\config\routing.yml` 
 
@@ -63,3 +63,11 @@ Nach dem Löschen der Ressourcen müssen die Verzeichnisrechte häufig neu geset
 ## Deployment für Live-Betrieb (per Skript)
 
 Alternativ gibt es unter `symfony` auch ein Shell-Skript `deploy.sh`, das die Rechte setzt und die Caches leert.
+
+
+## Grober Aufbau der Software
+
+Die Software besteht aus zwei Komponenten:
+
+  1. Der Anzeige auf dem Bildschirm und deren [Controllern](symfony/src/HSMA/InfoDisplay/Controller/View) und
+  2. dem Backend, um Daten auf den Bildschirm zu bringen und dessen [Controllern](symfony/src/HSMA/InfoDisplay/Controller/Admin).
