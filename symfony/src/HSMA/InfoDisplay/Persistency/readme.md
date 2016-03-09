@@ -1,3 +1,3 @@
-# DOA
+# Persistency
 
-Data access objects that allow persisting the objects of the model layer to the database.
+Classes for accessing REST APIs and for direct database operations.
