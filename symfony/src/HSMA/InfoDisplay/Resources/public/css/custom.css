@@ -16,3 +16,7 @@ tr.current-block {
     border-left: solid 4px red !important;
     border-right: solid 4px red !important;
 }
+
+body.black {
+    background-color: black;
+}

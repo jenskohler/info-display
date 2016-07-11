@@ -51,6 +51,11 @@ class DisplayController extends Controller {
                     'reload'=> true ]);
                     break;
 
+            case 2: $result = $this->forward('InfoDisplayBundle:View\Plakat:plakat', [
+                'request' => $request,
+                'reload'=> true ]);
+                break;
+
             default: $result = $this->forward('InfoDisplayBundle:View\Picture:picture', [
                     'request' => $request,
                     'reload' => true ]);

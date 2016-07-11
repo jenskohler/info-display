@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
  *
  * Page for the pictures..
  */
-class PictureController extends Controller {
+class PlakatController extends Controller {
 
     /**
      * Path to the pictures, relative to the location of this class in the file
@@ -38,7 +38,7 @@ class PictureController extends Controller {
      *
      * @return Response the response of the action
      */
-    public function pictureAction(Request $request, $reload = false) {
+    public function plakatAction(Request $request, $reload = false) {
 
         $date = new \DateTime();
 
@@ -47,7 +47,7 @@ class PictureController extends Controller {
         $finder->ignoreUnreadableDirs()
             ->in(__DIR__ . self::PATH_TO_PICTURES)
             ->files()
-            ->name('pic*.jpg');
+            ->name('plakat*.jpg');
 
         $files = [ ];
 
@@ -58,7 +58,7 @@ class PictureController extends Controller {
 
         $session = $request->getSession();
         $session->start();
-        $pictureIndex = $session->get('picture', 0);
+        $pictureIndex = $session->get('plakat', 0);
 
         if ($pictureIndex >= count($files)) {
             $pictureIndex = 0;
@@ -66,11 +66,11 @@ class PictureController extends Controller {
 
         $file = "images/$files[$pictureIndex]";
 
-        $session->set('picture', ++$pictureIndex);
+        $session->set('plakat', ++$pictureIndex);
 
-        return $this->render('InfoDisplayBundle:Info:picture.html.twig', array(
+        return $this->render('InfoDisplayBundle:Info:plakat.html.twig', array(
             'time'  => Utility::getGermanDateAndTime($date),
-            'timeout' => Config::RELOAD_PICTURE_PAGE_AFTER,
+            'timeout' => Config::RELOAD_PLAKAT_PAGE_AFTER,
             'picture' => $file,
             'reload'  => $reload,
         ));

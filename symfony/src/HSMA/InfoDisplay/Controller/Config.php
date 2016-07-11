@@ -91,6 +91,11 @@ class Config {
     /**
      * Reload interval for timetable pages.
      */
+    const RELOAD_PLAKAT_PAGE_AFTER = 15000;
+
+    /**
+     * Reload interval for timetable pages.
+     */
     const RELOAD_ROOM_PAGE_AFTER = 15000;
 
     /**
