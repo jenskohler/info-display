@@ -36,31 +36,29 @@ class DisplayController extends Controller {
         $session->start();
         $page = $session->get('page', 0);
 
-        switch ($page++) {
-            case 0: $result = $this->forward('InfoDisplayBundle:View\Timetable:timetable', [
-                    'request' => $request,
-                    'reload'=> true ]);
-                    break;
-// TODO: Enable news
-//            case 1: $result = $this->forward('InfoDisplayBundle:View\News:news', [
-//                    'request' => $request,
-//                    'reload' => true ]);
-//                    break;
-            case 1: $result = $this->forward('InfoDisplayBundle:View\Rooms:rooms', [
-                    'request' => $request,
-                    'reload'=> true ]);
-                    break;
+        $controller = [
+            'InfoDisplayBundle:View\Timetable:timetable',
+//            'InfoDisplayBundle:View\News:news',
+            'InfoDisplayBundle:View\Rooms:rooms',
+        ];
 
-            case 2: $result = $this->forward('InfoDisplayBundle:View\Plakat:plakat', [
-                'request' => $request,
-                'reload'=> true ]);
-                break;
-
-            default: $result = $this->forward('InfoDisplayBundle:View\Picture:picture', [
-                    'request' => $request,
-                    'reload' => true ]);
-                    $page = 0;
+        if (PlakatController::ready()) {
+            $controller[] = 'InfoDisplayBundle:View\Plakat:plakat';
         }
+
+        if (PictureController::ready()) {
+            $controller[] = 'InfoDisplayBundle:View\Picture:picture';
+        }
+
+        if ($page >= count($controller)) {
+            $page = 0;
+        }
+
+        $result = $this->forward($controller[$page], [
+            'request' => $request,
+            'reload'=> true ]);
+
+        $page++;
 
         $session->set('page', $page);
         return $result;

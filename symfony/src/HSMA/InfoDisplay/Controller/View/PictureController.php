@@ -31,6 +31,15 @@ class PictureController extends Controller {
     }
 
     /**
+     * Check if there is work to be done for the controller.
+     *
+     * @return bool true if the controller has work to do, otherwise false
+     */
+    public static function ready() {
+        return count(self::scanForFiles('pic*.jpg')) != 0;
+    }
+
+    /**
      * Action for the picture gallery.
      *
      * @param Request $request the request
@@ -42,19 +51,7 @@ class PictureController extends Controller {
 
         $date = new \DateTime();
 
-        // scan for existing pictures
-        $finder = new Finder();
-        $finder->ignoreUnreadableDirs()
-            ->in(__DIR__ . self::PATH_TO_PICTURES)
-            ->files()
-            ->name('pic*.jpg');
-
-        $files = [ ];
-
-        // get the names of the files
-        foreach ($finder as $file) {
-            $files[] = pathinfo($file)['basename'];
-        }
+        $files = self::scanForFiles('pic*.jpg');
 
         $session = $request->getSession();
         $session->start();
@@ -74,5 +71,29 @@ class PictureController extends Controller {
             'picture' => $file,
             'reload'  => $reload,
         ));
+    }
+
+    /**
+     * Can picture directory for files matching the given pattern.
+     *
+     * @param string $pattern pattern for file name
+     * @return string[] names of found files
+     */
+    protected static function scanForFiles($pattern) {
+        // scan for existing pictures
+        $finder = new Finder();
+        $finder->ignoreUnreadableDirs()
+            ->in(__DIR__ . self::PATH_TO_PICTURES)
+            ->files()
+            ->name($pattern);
+
+        $files = [ ];
+
+        // get the names of the files
+        foreach ($finder as $file) {
+            $files[] = pathinfo($file)['basename'];
+        }
+
+        return $files;
     }
 }

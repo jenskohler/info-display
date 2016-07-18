@@ -16,18 +16,21 @@ use Symfony\Component\HttpFoundation\Session\Session;
  *
  * Page for the pictures..
  */
-class PlakatController extends Controller {
-
-    /**
-     * Path to the pictures, relative to the location of this class in the file
-     * system.
-     */
-    const PATH_TO_PICTURES = '/../../../../../web/images';
+class PlakatController extends PictureController {
 
     /**
      * Constructor.
      */
     public function __construct() {
+    }
+
+    /**
+     * Check if there is work to be done for the controller.
+     *
+     * @return bool true if the controller has work to do, otherwise false
+     */
+    public static function ready() {
+        return count(self::scanForFiles('plakat*.jpg')) != 0;
     }
 
     /**
@@ -42,19 +45,7 @@ class PlakatController extends Controller {
 
         $date = new \DateTime();
 
-        // scan for existing pictures
-        $finder = new Finder();
-        $finder->ignoreUnreadableDirs()
-            ->in(__DIR__ . self::PATH_TO_PICTURES)
-            ->files()
-            ->name('plakat*.jpg');
-
-        $files = [ ];
-
-        // get the names of the files
-        foreach ($finder as $file) {
-            $files[] = pathinfo($file)['basename'];
-        }
+        $files = self::scanForFiles('plakat*.jpg');
 
         $session = $request->getSession();
         $session->start();
