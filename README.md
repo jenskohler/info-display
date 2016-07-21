@@ -24,8 +24,15 @@ Im Entwicklungsmodus ist die Anwendung unter der URL: `app_dev.php/...` erreichb
 Als erstes muss das Framework installiert werden.
 Im Verzeichnis `symfony` ist auszuführen (eventuell mit `sudo`, damit die Rechte stimmen):
 
+Bevor die beiden Kommandos eingegeben werden können, muss sichergestellt werden, dass eine php.ini
+vorhanden ist.
+
     php composer.phar self-update
     php composer.phar update
+    
+Sollten bei der Installation Fehler auftreten, müssen die genannten Module aus der Fehlermeldung
+in der php.ini einkommiert werden. Des Weiteren muss die Variable "memory_limit" in 
+der php.ini hochgesetzt werden, da 128MB nicht ausreichen. 
 
 Danach müssen die Rechte auf den cache-Verzeichnissen für den Webserver (`nobody` oder `www-data`) erteilt werden.
 
@@ -33,6 +40,10 @@ Danach müssen die Rechte auf den cache-Verzeichnissen für den Webserver (`nobo
     sudo chown -R nobody symfony/app/logs/
 
 Die Login-Seite ist unter `app_dev.php/` erreichbar. Ein Test-User ist `t.smits` mit dem Passwort `test`.
+
+Falls PHP-Storm mit eingeschaltenen Plugin "symfony" zur Entwicklung genutzt wird, ist zu beachten,
+dass das Aufrufen der app_dev.php aus dem Enticklungsstudio nicht funktioniert.
+Hierzu muss unter "Run-Configuration" ein PHP-WebServer eingerichtet werden.
 
 Das Datenbank-Password ist nicht gesetzt. Deswegen muss vor der Benutzung die Datei `parameters.yml` unter [symfony/src/HSMA/InfoDisplay/Resources/config](symfony/src/HSMA/InfoDisplay/Resources/config) aus der Datei [parameters.yml.template](symfony/src/HSMA/InfoDisplay/Resources/config/parameters.yml.template) erzeugt werden.
 
