@@ -45,7 +45,7 @@ class PlakatController extends PictureController {
 
         $date = new \DateTime();
 
-        $files = self::scanForFiles('plakat*.jpg');
+        $files = self::scanForFiles('plakat*.*');
 
         $session = $request->getSession();
         $session->start();
