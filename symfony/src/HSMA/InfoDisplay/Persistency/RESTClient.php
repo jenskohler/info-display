@@ -55,17 +55,27 @@ class RESTClient {
     ];
 
     /**
-     * Base part of the URL.
+     * Base part of the URL for the timetable.
      *
      * @var string
      */
-    private $baseURL;
+    private $baseURLTimetable;
+
+    /**
+     * Base part of the URL for rooms.
+     * @var
+     */
+    private $baseURLRooms;
 
     /**
      * @param $baseURL string Base part of the URL.
      */
-    public function __construct($baseURL = 'https://intern.informatik.hs-mannheim.de') {
-        $this->baseURL = $baseURL;
+    public function __construct(
+        $baseURLTimetable = 'https://services.informatik.hs-mannheim.de',
+        $baseURLRooms = 'https://intern.informatik.hs-mannheim.de'
+    ) {
+        $this->baseURLTimetable = $baseURLTimetable;
+        $this->baseURLRooms     = $baseURLRooms;
     }
 
     /**
@@ -75,7 +85,7 @@ class RESTClient {
      */
     public function readAllRooms() {
 
-        $url = "$this->baseURL/rooms/api/room";
+        $url = "$this->baseURLRooms/rooms/api/room";
 
         $restResponse = \Httpful\Request::get($url)
             ->expectsJson()
@@ -208,7 +218,7 @@ class RESTClient {
      */
     private function retrieveTimetable($semester, \DateTime $date = null) {
 
-        $url = "$this->baseURL/stundenplan/stundenplan_json.php?sem=$semester";
+        $url = "$this->baseURLTimetable/stundenplan/stundenplan_json.php?sem=$semester";
 
         if ($date != null) {
             $url = $url . "&tag=" . $this->numberToDay($date->format('N'));
@@ -289,10 +299,10 @@ class RESTClient {
 
         if ($date != null) {
             $dateString = $this->dateToString($date);
-            $url = "$this->baseURL/rooms/api/booking/$room?date=$dateString";
+            $url = "$this->baseURLRooms/rooms/api/booking/$room?date=$dateString";
         }
         else {
-            $url = "$this->baseURL/rooms/api/booking/$room";
+            $url = "$this->baseURLRooms/rooms/api/booking/$room";
         }
 
         $restResponse = \Httpful\Request::get($url)
