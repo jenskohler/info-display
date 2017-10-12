@@ -59,7 +59,7 @@ class RoomCache extends Cache {
         if (!isset($data)) {
             return $bookings;
         }
-        
+
         foreach ($data as $room => $entries) {
             foreach ($entries as $entry) {
                 if ($date->format('Y-m-d') == $entry->date->format('Y-m-d')) {

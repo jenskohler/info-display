@@ -64,7 +64,7 @@ class RESTClient {
     /**
      * @param $baseURL string Base part of the URL.
      */
-    public function __construct($baseURL = 'https://services.informatik.hs-mannheim.de') {
+    public function __construct($baseURL = 'https://intern.informatik.hs-mannheim.de') {
         $this->baseURL = $baseURL;
     }
 
@@ -296,10 +296,13 @@ class RESTClient {
         }
 
         $restResponse = \Httpful\Request::get($url)
-            ->expectsJson()
+//            ->expectsJson()
+            ->expects("text/plain")
             ->send();
 
-        $json = $restResponse->body;
+        $body = "{" . $restResponse->body ."}";
+        $json = json_decode($body);
+        //$json = $restResponse->body;
 
         $result = [];
 
