@@ -4,6 +4,7 @@ namespace HSMA\InfoDisplay\Graphics;
 use HSMA\InfoDisplay\Entity\Domain\Booking;
 use HSMA\InfoDisplay\Entity\Domain\Utility;
 
+
 /**
  * Class Sign
  * @package HSMA\InfoDisplay\Graphics
@@ -20,7 +21,7 @@ class Sign {
     /**
      * Left margin for text data.
      */
-    const LEFT_MARGIN_TEXT = 32;
+    const LEFT_MARGIN_TEXT = 100;
 
     /**
      * @var resource the image handle
@@ -85,17 +86,24 @@ class Sign {
      * Create a new sign.
      *
      * @param $baseImage string path to base image, i.e. the image used as background. The provided image
-     *          must be in the GIF format and have the dimension 800x480 pixel.
+     *          must be in the PNG format and have the dimension 800x480 pixel.
      */
-    public function __construct($room, $lectures, $now, $baseImage) {
+    public function __construct($config, $room, $id, $bookings, $now)
+    {
+
+        $this->config = $config;
+
+        $this->im = imagecreatefrompng($this->config['template']);
+
+
 
         // initialize graphics library
-        if ($baseImage != null) {
-            $this->im = imagecreatefrompng("/Users/thomas/Temp/bild.png");
-        }
-        else {
-            $this->im = imagecreate(800, 480);
-        }
+        //if ($baseImage != null) {
+        //     $this->im = imagecreatefrompng('/home/jens/temp/bild.png');
+        //}
+        //else {
+        //     $this->im = imagecreate(800, 480);
+        //}
 
         $block = Utility::timeToBlock($now);
 
@@ -111,28 +119,24 @@ class Sign {
         $this->white = imagecolorallocate($this->im, 255, 255, 255);
 
         // derive name of room from id
-        $this->roomName = $this->roomName($room);
+        $this->roomName = $room['name'];
 
         // render room info
-        $this->roomInfo($room[0], substr($room, 1), $this->roomName);
 
-        $lab = !($room == 'A105a' || $room == 'A212a');
+        $this->roomInfo(substr($id, 0, 1), substr($id, 1), $this->roomName);
 
+        $lab = !($id == 'A105a' || $id == 'A212a');
+        $roomBookings = [null, null, null, null, null, null, null];
         if ($lab) {
-            // lab
-            $bookings = [ null, null, null, null, null, null, null ];
 
-            foreach ($lectures as $lecture) {
-                $bookings[$lecture->block - 1] = $lecture;
+            foreach ($bookings as $booking) {
+                $roomBookings[$booking->block - 1] = $booking;
             }
         }
-        else {
-            // meeting room
-            $bookings = $lectures;
-        }
+
 
         if ($lab) {
-            $this->renderLabRoom($block, $bookings);
+            $this->renderLabRoom($block, $roomBookings);
         }
         else {
             $this->renderMeetingRoom($now, $bookings);
@@ -188,7 +192,7 @@ class Sign {
     public function toImage($filePath) {
         imagepng($this->im, $filePath);
         $cmd = 'export DYLD_LIBRARY_PATH=opt/local/lib; /opt/local/bin/convert -colorspace gray -colors 2 -normalize -threshold 99% '
-            . $filePath . ' ' . '/Users/thomas/Temp/result_sw.png';
+            . $filePath . ' ' . '/home/jens/temp/result_sw.png';
         $results = shell_exec($cmd);
     }
 
@@ -292,34 +296,43 @@ class Sign {
         }
         else {
             $lecture = "$currentLecture->description ($currentLecture->lecture)";
-            $responsible = $currentLecture->responsibleLong;
+            // $responsible = $currentLecture->responsibleLong;
             $cancelled = $currentLecture->cancelled;
         }
 
-        $this->renderCurrentEvent($lecture, $time, $responsible, $cancelled);
+        $this->renderCurrentEvent($lecture, $time, null, $cancelled);
 
         if ($block >= 7) {
             return;
         }
 
-        $this->textPixelLeftAligned($this->gdFont11x19normal, self::LEFT_MARGIN_TEXT, 275, 'Nächste Veranstaltung');
+        $this->textPixelLeftAligned($this->gdFont11x19normal, self::LEFT_MARGIN_TEXT, 300, 'Nächste Veranstaltungen:');
 
-        $ypos = 315 - 10;
+        $ypos = 325;
         $count = 0;
 
         for ($i = $block; $i < count($bookings); $i++) {
             $l = $bookings[$i];
-            $time = Utility::decodeBlock($i + 1);
+            $time = Utility::decodeBlock($i + 1, false);
 
             if ($l == null) {
                 $lecture = "<Raum ist nicht belegt>";
+
+                $this->textPixelRightAligned($this->gdFont10x20normal, self::LEFT_MARGIN_TEXT + 151, $ypos, $time);
+                $this->textPixelLeftAligned($this->gdFont10x20normal, self::LEFT_MARGIN_TEXT + 185, $ypos, $lecture);
             }
             else {
-                $lecture = "$l->description ($l->lecture)";
+                //$lecture = "$l->description ($l->lecture)";
+                $arr = explode("\n", $l->description, 3);
+                $lecture = $l->lecture . ' ' . ($l->responsibleLong);
+                //$lectureDetails = $arr[0];
+
+                $this->textPixelRightAligned($this->gdFont10x20normal, self::LEFT_MARGIN_TEXT + 151, $ypos, $time);
+                $this->textPixelLeftAligned($this->gdFont10x20normal, self::LEFT_MARGIN_TEXT + 185, $ypos, $lecture);
+                //$this->textPixelLeftAligned($this->gdFont10x20normal, self::LEFT_MARGIN_TEXT + 200, $ypos, $lectureDetails);
             }
 
-            $this->textPixelRightAligned($this->gdFont10x20normal, self::LEFT_MARGIN_TEXT + 151, $ypos, $time);
-            $this->textPixelLeftAligned($this->gdFont10x20normal, self::LEFT_MARGIN_TEXT + 185, $ypos, $lecture);
+
 
             $ypos += 25;
 
@@ -351,7 +364,15 @@ class Sign {
             // data of the event
             $start = $booking->start->format('H:i');
             $end   = $booking->end->format('H:i');
-            $event = $booking->description;
+
+
+            if (empty($booking->description)) {
+                $event = $booking->lecture;
+            } else {
+                $event = $booking->description;
+            }
+
+
 
             $time = "$start-$end Uhr";
 
@@ -360,10 +381,15 @@ class Sign {
                 $this->renderCurrentEvent($event, $time, $booking->responsibleLong);
                 $occupied = true;
             }
+
             else {
                 // an event in the future
+
+
+                $event = substr($event, 0, 30);
+
                 $this->textPixelRightAligned($this->gdFont10x20normal, self::LEFT_MARGIN_TEXT + 151, $ypos, $time);
-                $this->textPixelLeftAligned($this->gdFont10x20normal, self::LEFT_MARGIN_TEXT + 185, $ypos, $event);
+                $this->textPixelLeftAligned($this->gdFont10x20normal, self::LEFT_MARGIN_TEXT + 185, $ypos, $event . ' ' . $booking->responsibleLong);
 
                 $ypos += 25;
                 $count++;
@@ -373,7 +399,9 @@ class Sign {
                 // do not show more than 5 future events
                 break;
             }
+
         }
+
 
         $nextSession = $this->findNextSession($now, $bookings);
 
@@ -389,13 +417,14 @@ class Sign {
                 $time = '';
             }
 
-            $this->renderCurrentEvent($lecture, $time, '');
+            $this->renderCurrentEvent($lecture, $time, null);
         }
 
         if ($nextSession != null) {
             // only show heading for next session if there is one
-            $this->textPixelLeftAligned($this->gdFont11x19normal, self::LEFT_MARGIN_TEXT , 275, 'Nächste Veranstaltung');
+            $this->textPixelLeftAligned($this->gdFont11x19normal, self::LEFT_MARGIN_TEXT, 275, 'Nächste Reservierungen:');
         }
+
     }
 
     /**
@@ -428,7 +457,7 @@ class Sign {
     private function renderCurrentEvent($eventName, $time, $responsible, $cancelled = false) {
 
         // adjust font size to avoid running over the right margin
-        $fontSizeLecture = 27;
+        $fontSizeLecture = 18;
 
         do {
             $fontSizeLecture--;
@@ -436,7 +465,7 @@ class Sign {
         } while ($widthLecture > 630);
 
         // render the time
-        $xPosTime = self::LEFT_MARGIN_TEXT + $widthLecture;
+        $xPosTime = 480;// + $widthLecture;
         $this->textPixelRightAligned($this->gdFont10x20normal, $xPosTime, 160, $time);
 
         // render event and person responsible
@@ -452,5 +481,57 @@ class Sign {
 
             $this->textPixelLeftAligned($this->gdFont10x20normal, self::LEFT_MARGIN_TEXT, 160, 'Veranstaltung fällt aus');
         }
+    }
+
+    /**
+     * Convert the content of this object to a image file.
+     *
+     * @param $filePath string path to the file
+     */
+    public function toFile($filePath)
+    {
+        //header( "Content-type: image/png" );
+        imagefilter($this->im, IMG_FILTER_GRAYSCALE);
+        $rotated_image = imagerotate($this->im, 90, 0);
+        imagepng($rotated_image, $filePath);
+        //imagepng($this->im, $filePath+'_sw');
+        //$cmd = 'export DYLD_LIBRARY_PATH=opt/local/lib; /opt/local/bin/convert -colorspace gray -colors 2 -normalize -threshold 99% '
+        //    . $filePath . ' ' . '/home/jens/temp/bild_sw.png';
+        // $fileCompressed = $filePath + $id + '_sw.png';
+        // $cmd = 'export DYLD_LIBRARY_PATH=opt/local/lib; /opt/local/bin/convert -colorspace gray  -colors 2  -normalize ' . $filePath;
+        // $results = shell_exec($cmd);
+    }
+
+
+    /**
+     * Optimizes PNG file with pngquant 1.8 or later (reduces file size of 24-bit/32-bit PNG images).
+     *
+     * You need to install pngquant 1.8 on the server (ancient version 1.0 won't work).
+     * There's package for Debian/Ubuntu and RPM for other distributions on http://pngquant.org
+     *
+     * @param $path_to_png_file string - path to any PNG file, e.g. $_FILE['file']['tmp_name']
+     * @param $max_quality int - conversion quality, useful values from 60 to 100 (smaller number = smaller file)
+     * @return string - content of PNG file after conversion
+     */
+    public function compress_png($path_to_png_file)
+    {
+        if (!file_exists($path_to_png_file)) {
+            throw new Exception("File does not exist: $path_to_png_file");
+        }
+
+        // guarantee that quality won't be worse than that.
+        $max_quality = 90;
+        $min_quality = 60;
+
+        // '-' makes it use stdout, required to save to $compressed_png_content variable
+        // '<' makes it read from the given file path
+        // escapeshellarg() makes this safe to use with any path
+        $compressed_png_content = shell_exec("pngquant --quality=$min_quality-$max_quality - < " . escapeshellarg($path_to_png_file));
+
+        if (!$compressed_png_content) {
+            throw new Exception("Conversion to compressed PNG failed. Is pngquant 1.8+ installed on the server?");
+        }
+
+        return $compressed_png_content;
     }
 }
