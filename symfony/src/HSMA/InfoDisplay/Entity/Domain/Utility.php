@@ -134,6 +134,13 @@ class Utility {
         $m = $diff->m;
 
         switch ($h) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
             case  8: return 1;
             case  9: return ($m <= 45) ? 1 : 2;
             case 10: return 2;
@@ -297,6 +304,29 @@ class Utility {
         }
 
         return $date->format('d.m.Y H:i') . ' Uhr';
+    }
+
+    /**
+     * Find the time after the given one. The method gets an array of times
+     * as strings (e.g. '08:00') and searches for the first entry in the array,
+     * that is after the time we are searching for. The date part of the provided
+     * search object is ignored.
+     *
+     * @param string[] $times array with times. Must be sorted from small to big.
+     * @param \DateTime $search time we are searching for
+     *
+     * @return \DateTime|null the found time or null if no match was found
+     */
+    public static function findTimeAfter($times, \DateTime $search)
+    {
+        $after = null;
+        foreach ($times as $time) {
+            $timeAsObject = \DateTime::createFromFormat('H:i', $time);
+            if ($timeAsObject->format('Hi') > $search->format('Hi')) {
+                return $timeAsObject;
+            }
+        }
+        return null;
     }
 
 }

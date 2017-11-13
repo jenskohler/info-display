@@ -6,12 +6,10 @@ require_once '../../../../vendor/nategood/httpful/src/Httpful/Http.php';
 require_once '../../../../vendor/nategood/httpful/src/Httpful/Bootstrap.php';
 require_once '../Entity/Domain/TimeTableEntry.php';
 */
-use HSMA\InfoDisplay\Controller\Config;
 use HSMA\InfoDisplay\Controller\Viewdata\Timetable;
-use HSMA\InfoDisplay\Entity\Domain\Room;
 use HSMA\InfoDisplay\Entity\Domain\Booking;
+use HSMA\InfoDisplay\Entity\Domain\Room;
 use HSMA\InfoDisplay\Entity\Domain\TimeTableEntry;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * Class RESTClient
@@ -338,7 +336,7 @@ class RESTClient {
                 $bookings->responsible_long,
                 isset($bookings->semester) ? $bookings->semester : '',
                 isset($bookings->faculty) ? $bookings->faculty : '',
-                $bookings->block - 1,
+                $bookings->block,
                 $day,
                 $bookingDate,
                 $start,
@@ -462,6 +460,49 @@ class RESTClient {
             case 7: return 'SO';
             default: return null;
         }
+    }
+
+
+    /**
+     * Send data to the ePaper server
+     *
+     * @param string $displayId id of the display
+     * @param string $file file path
+     */
+    public function sendPicture($displayId, $file, $baseURL)
+    {
+        // read the picture from disk
+        $picture = file_get_contents($file);
+        // create JSON from the picture
+        $json = $this->createJSON($displayId, $picture);
+        // Open cURL connection
+        $url = $baseURL . '/service/task';
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "Content-Type: application/json;charset=UTF-8",
+            "Content-Length: " . strlen($json)
+        ]);;
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        // execute call
+        $result = curl_exec($ch);
+        curl_close($ch);
+    }
+
+    /**
+     * Convert the image on disk to a JSON document that can be sent to the display.
+     *
+     * @param string $label id of the display
+     * @param string $file file path
+     *
+     * @return string the data encoded as JSON
+     */
+    private function createJSON($label, $file)
+    {
+        $pictureEncoded = base64_encode($file);
+        return '{"@title":"Send image","ImageTask":[{"@labelId":"' . $label . '","@page":0,' .
+            '"@preload":false,"Image":"' . $pictureEncoded . '"}]}';
     }
 }
 /*
