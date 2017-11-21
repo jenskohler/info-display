@@ -11,7 +11,7 @@ require_once(__DIR__ . '/../Persistency/RESTClient.php');
 #require_once('HSMA/InfoDisplay/Persistency/RESTClientDisplays.php');
 require_once(__DIR__ . '/../Entity/Domain/Booking.php');
 require_once(__DIR__ . '/../Entity/Domain/Utility.php');
-require_once('../../../../vendor/nategood/httpful/bootstrap.php');
+require_once(__DIR__ . '/../../../../vendor/nategood/httpful/bootstrap.php');
 // Load config
 require_once('config.php');
 
