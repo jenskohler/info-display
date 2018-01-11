@@ -11,7 +11,7 @@ require_once(__DIR__ . '/../Persistency/RESTClient.php');
 #require_once('HSMA/InfoDisplay/Persistency/RESTClientDisplays.php');
 require_once(__DIR__ . '/../Entity/Domain/Booking.php');
 require_once(__DIR__ . '/../Entity/Domain/Utility.php');
-require_once('../../../../vendor/nategood/httpful/bootstrap.php');
+require_once(__DIR__ . '/../../../../vendor/nategood/httpful/bootstrap.php');
 // Load config
 require_once('config.php');
 
@@ -91,7 +91,7 @@ foreach ($config['rooms'] as $id => $room) {
     // Send image to ePaper display
     writeLn("    Sending image to display $display");
     if ($display != null && strlen($display) > 5) {
-        $clientEPaper->sendPicture($display, $fileName, $config['ePaperServer']);
+       // $clientEPaper->sendPicture($display, $fileName, $config['ePaperServer']);
     }
 }
 writeLn();

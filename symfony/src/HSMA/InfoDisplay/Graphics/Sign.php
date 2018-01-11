@@ -108,9 +108,9 @@ class Sign {
         $block = Utility::timeToBlock($now);
 
         // load fonts and colors
-        $this->gdFont10x20normal = imageloadfont(__DIR__ . '/../Resources/fonts/gd/X_10x20_LE.gdf');
+        $this->gdFont10x20normal = imageloadfont(__DIR__ . '/../Resources/fonts/gd/X_12x24_LE.gdf');
         $this->gdFont11x19normal = imageloadfont(__DIR__ . '/../Resources/fonts/gd/Luc_11x19_LE.gdf');
-        $this->gdFont6x12normal  = imageloadfont(__DIR__ . '/../Resources/fonts/gd/X_6x12_LE.gdf');
+        $this->gdFont6x12normal  = imageloadfont(__DIR__ . '/../Resources/fonts/gd/X_9x15_LE.gdf');
 
         $this->fontNormal = __DIR__ . '/../Resources/fonts/ttf/FiraSans-Book.ttf';
         $this->fontBold   = __DIR__ . '/../Resources/fonts/ttf/FiraSans-Medium.ttf';
@@ -457,7 +457,7 @@ class Sign {
     private function renderCurrentEvent($eventName, $time, $responsible, $cancelled = false) {
 
         // adjust font size to avoid running over the right margin
-        $fontSizeLecture = 18;
+        $fontSizeLecture = 24;
 
         do {
             $fontSizeLecture--;

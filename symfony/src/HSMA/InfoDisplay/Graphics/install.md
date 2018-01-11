@@ -96,6 +96,7 @@ sudo rm -rf cache/ logs/
 
 
 php composer.phar self-update
+
 php composer.phar update
 
 Dies schließt die Installation des PHP-Rendering-Projekts ab.

@@ -9,7 +9,7 @@ $config = [
     // URL of the REST interface providing booking information
     'bookingURL' => 'https://intern.informatik.hs-mannheim.de',
     // URL of the REST interface of the ePaper server
-    'ePaperServer' => 'http://141.19.142.222:8001',
+    'ePaperServer' => 'http://141.19.141.24:8001',
     // Directory for generated image files
     'imagePath' => '/home/jens/temp/epaper',
     // Template picture for the sign
